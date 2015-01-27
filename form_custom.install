@@ -1,0 +1,59 @@
+<?php
+function form_custom_schema() {
+	$schema['form_custom_submissions'] = array(
+		'description' => 'A table to hold the submission data from the custom form.',
+		'fields' => array(
+			'id' => array(
+				'description' => 'The submission id.',
+				'type' => 'serial',
+				'unsigned' => true,
+				'not null' => true,
+			),
+			'first-name' => array(
+				'description' => "The submitter's first name",
+				'type' => 'varchar',
+				'length' => 255,
+				'not null' => true,
+				'default' => '',
+			),
+			'last-name' => array(
+				'description' => "The submitter's last name.",
+				'type' => 'varchar',
+				'length' => 255,
+				'not null' => true,
+				'default' => '',
+			),
+			'gender' => array(
+				'description' => "The submitter's gender.",
+				'type' => 'int',
+				'not null' => true,
+				'unsigned' => true,
+				'default' => 0, // 0 = male, 1 = female
+			),
+			'age' => array(
+				'description' => "The submitter's age.",
+				'type' => 'int',
+				'not null' => true,
+				'unsigned' => true,
+				'default' => 0,
+			),
+			'email' => array(
+				'description' => "The submitter's email address.",
+				'type' => 'varchar',
+				'length' => 255,
+				'not null' => true,
+				'default' => '',
+			),
+		),
+	);
+}
+
+function form_custom_install() {
+	drupal_install_schema('form_custom');
+}
+
+funciton form_custom_uninstall() {
+	drupal_uninstall_schema('form_custom');
+}
+
+

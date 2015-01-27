@@ -1,0 +1,119 @@
+<?php
+/**
+ * @file
+ * A page with a custom form, the submissions of which are stored via MySQL
+ * and may be viewed by administrators.
+ */
+
+/**
+ * Implementation of hook_menu.
+ */
+function form_custom_menu() {
+	$items = array();
+
+	$items['form-custom'] = array(
+		'title' => 'Custom Form',
+		'page callback' => 'drupal_get_form',
+		'page arguments' => array('form_custom_form'),
+		'access callback' => true,
+	);
+	return $items;
+}
+
+/**
+ * Implementation of hook_form
+ */
+function form_custom_form($form, &$form_state) {
+	$form['first-name'] = array(
+		'#type' => 'textfield',
+		'#title' => 'First Name',
+		'#size' => 15,
+		'#maxlength' => 20,
+		'#required' => true,
+	);
+
+	$form['last-name'] = array(
+		'#type' => 'textfield',
+		'#title' => 'Last Name',
+		'#size' => 15,
+		'#maxlength' => 20,
+	);
+
+	$form['gender_values'] = array(
+		'#type' => 'value',
+		'#value' => array(
+			-1 => t('Unspecified'),
+			0 => t('Male'),
+			1 => t('Female'),
+		),
+	);
+
+	$form['gender'] = array(
+		'#type' => 'select',
+		'#title' => t('Gender'),
+		'#options' => $form['gender_values']['#value'],
+	);
+
+        $form['email'] = array(
+                '#type' => 'textfield',
+                '#title' => 'Email Address',
+                '#size' => 20,
+                '#maxlength' => 25,
+        );
+
+        $form['age'] = array(
+                '#type' => 'textfield',
+                '#title' => 'Age',
+                '#size' => 2,
+                '#maxlength' => 3,
+        );
+
+	$form['submit'] = array(
+		'#type' => 'submit',
+		'#value' => t('Submit'),
+	);
+
+	return $form;
+}
+
+/**
+ * Implementation of hook_form_submit
+ */
+function form_custom_form_submit($form, &$form_state) {
+}
+
+/**
+ * Implementation of hook_form_validate
+ */
+function form_custom_form_validate($form, &$form_state) {
+	$values =& $form_state['values'];
+
+	if (empty($values['first-name'])) {
+		form_set_error('first-name', t('Please provide a first name.'));
+	}
+
+        if (empty($values['last-name'])) {
+                form_set_error('last-name', t('Everyone\'s got a last name... what\'s yours?'));
+        }
+
+	if (empty($values['gender'])) {
+		form_set_error('gender', t('Don\'t forget to specify your gender!'));
+	}
+
+        if (empty($values['age'])) {
+                form_set_error('age', t('You must provide an age.'));
+        } elseif ($values['age'] > 120) {
+		form_set_error('age', t('You\'re not ' . $values['age'] . ' years old, I guarantee it.');
+	} elseif ($values['age'] < 5) {
+		form_set_error('age', t('Don\'t get me wrong; I respect a toddler or infant that can use a computer, but seriously, you\'re not old enough to be filling out random forms online.'));
+	} elseif ($values['age'] < 13) {
+		form_set_error('age', t('Like most websites, you\'re not allowed to do stuff until you\'re at least 13 years old. Sorry, ' . ($values['gender'] == 'male' ? 'dude' : 'gal')));
+	}
+
+        if (empty($values['email'])) {
+                form_set_error('email', t('You forgot to give your email address.'));
+        } elseif (!valid_email_address($values['email'])) {
+		form_set_error('email', t('Are you sure that\'s an email address? It sure doesn\'t look like one to me!'));
+	}
+}
+
