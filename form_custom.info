@@ -1,3 +1,4 @@
 name = Custom Form
 description = This module adds a custom form page accessible by all. Submissions are stored and may be viewed by administrators.
 core = 7.x
+configure = admin/config/people/form-custom
