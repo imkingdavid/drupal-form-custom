@@ -54,19 +54,19 @@ function form_custom_form($form, &$form_state) {
 		'#options' => $form['gender_values']['#value'],
 	);
 
-        $form['email'] = array(
-                '#type' => 'textfield',
-                '#title' => 'Email Address',
-                '#size' => 20,
-                '#maxlength' => 25,
-        );
+		$form['email'] = array(
+				'#type' => 'textfield',
+				'#title' => 'Email Address',
+				'#size' => 20,
+				'#maxlength' => 25,
+		);
 
-        $form['age'] = array(
-                '#type' => 'textfield',
-                '#title' => 'Age',
-                '#size' => 2,
-                '#maxlength' => 3,
-        );
+		$form['age'] = array(
+				'#type' => 'textfield',
+				'#title' => 'Age',
+				'#size' => 2,
+				'#maxlength' => 3,
+		);
 
 	$form['submit'] = array(
 		'#type' => 'submit',
@@ -92,27 +92,27 @@ function form_custom_form_validate($form, &$form_state) {
 		form_set_error('first-name', t('Please provide a first name.'));
 	}
 
-        if (empty($values['last-name'])) {
-                form_set_error('last-name', t('Everyone\'s got a last name... what\'s yours?'));
-        }
+		if (empty($values['last-name'])) {
+				form_set_error('last-name', t('Everyone\'s got a last name... what\'s yours?'));
+		}
 
 	if (empty($values['gender'])) {
 		form_set_error('gender', t('Don\'t forget to specify your gender!'));
 	}
 
-        if (empty($values['age'])) {
-                form_set_error('age', t('You must provide an age.'));
-        } elseif ($values['age'] > 120) {
-		form_set_error('age', t('You\'re not ' . $values['age'] . ' years old, I guarantee it.');
+	if (empty($values['age'])) {
+			form_set_error('age', t('You must provide an age.'));
+	} elseif ($values['age'] > 120) {
+		form_set_error('age', t('You\'re not ' . $values['age'] . ' years old, I guarantee it.'));
 	} elseif ($values['age'] < 5) {
 		form_set_error('age', t('Don\'t get me wrong; I respect a toddler or infant that can use a computer, but seriously, you\'re not old enough to be filling out random forms online.'));
 	} elseif ($values['age'] < 13) {
 		form_set_error('age', t('Like most websites, you\'re not allowed to do stuff until you\'re at least 13 years old. Sorry, ' . ($values['gender'] == 'male' ? 'dude' : 'gal')));
 	}
 
-        if (empty($values['email'])) {
-                form_set_error('email', t('You forgot to give your email address.'));
-        } elseif (!valid_email_address($values['email'])) {
+		if (empty($values['email'])) {
+				form_set_error('email', t('You forgot to give your email address.'));
+		} elseif (!valid_email_address($values['email'])) {
 		form_set_error('email', t('Are you sure that\'s an email address? It sure doesn\'t look like one to me!'));
 	}
 }

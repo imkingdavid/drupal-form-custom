@@ -45,7 +45,10 @@ function form_custom_schema() {
 				'default' => '',
 			),
 		),
+
 	);
+
+	return $schema;
 }
 
 function form_custom_install() {
