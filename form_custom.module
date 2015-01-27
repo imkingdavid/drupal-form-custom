@@ -54,19 +54,19 @@ function form_custom_form($form, &$form_state) {
 		'#options' => $form['gender_values']['#value'],
 	);
 
-		$form['email'] = array(
-				'#type' => 'textfield',
-				'#title' => 'Email Address',
-				'#size' => 20,
-				'#maxlength' => 25,
-		);
+	$form['email'] = array(
+		'#type' => 'textfield',
+		'#title' => 'Email Address',
+		'#size' => 20,
+		'#maxlength' => 25,
+	);
 
-		$form['age'] = array(
-				'#type' => 'textfield',
-				'#title' => 'Age',
-				'#size' => 2,
-				'#maxlength' => 3,
-		);
+	$form['age'] = array(
+		'#type' => 'textfield',
+		'#title' => 'Age',
+		'#size' => 2,
+		'#maxlength' => 3,
+	);
 
 	$form['submit'] = array(
 		'#type' => 'submit',

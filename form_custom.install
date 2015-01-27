@@ -45,18 +45,13 @@ function form_custom_schema() {
 				'default' => '',
 			),
 		),
-
+		'primary key' => array('id'),
+		'indexes' => array(
+			'firstname' => array('first-name'),
+			'lastname' => array('last-name'),
+			'email' => array('email'),
+		),
 	);
 
 	return $schema;
 }
-
-function form_custom_install() {
-	drupal_install_schema('form_custom');
-}
-
-function form_custom_uninstall() {
-	drupal_uninstall_schema('form_custom');
-}
-
-
