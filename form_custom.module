@@ -17,6 +17,16 @@ function form_custom_menu() {
 		'page arguments' => array('form_custom_form'),
 		'access callback' => true,
 	);
+
+	$items['admin/config/people/form-custom'] = array(
+		'title' => 'Custom Form Submissions',
+		'description' => 'View the entries submitted on the custom form.',
+		'page callback' => 'form_custom_admin',
+		'access callback' => 'user_access',
+		'access arguments' => array('administer users'),
+		'type' => MENU_NORMAL_ITEM,
+	);
+
 	return $items;
 }
 
@@ -113,6 +123,20 @@ function form_custom_form_validate($form, &$form_state) {
 	}
 }
 
+function form_custom_admin() {
+	$header = array('ID', 'First name', 'Last name', 'Gender', 'Age', 'Email');
+	$rows = array();
+
+	$result = db_query('SELECT * FROM form_custom_submissions ORDER BY id');
+	foreach ($result as $record) {
+		$rows[] = (array) $record;
+	}
+
+	return theme('table', array('header' => $header, 'rows' => $rows));
+}
+
+
+// Helper function
 function unset_each(array $keys, array &$array) {
 	foreach ($keys as $key) {
 		unset($array[$key]);
