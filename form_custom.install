@@ -52,7 +52,7 @@ function form_custom_install() {
 	drupal_install_schema('form_custom');
 }
 
-funciton form_custom_uninstall() {
+function form_custom_uninstall() {
 	drupal_uninstall_schema('form_custom');
 }
 
