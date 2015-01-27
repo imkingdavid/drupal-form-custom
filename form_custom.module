@@ -24,34 +24,24 @@ function form_custom_menu() {
  * Implementation of hook_form
  */
 function form_custom_form($form, &$form_state) {
-	$form['first-name'] = array(
+	$form['firstname'] = array(
 		'#type' => 'textfield',
 		'#title' => 'First Name',
 		'#size' => 15,
 		'#maxlength' => 20,
-		'#required' => true,
 	);
 
-	$form['last-name'] = array(
+	$form['lastname'] = array(
 		'#type' => 'textfield',
 		'#title' => 'Last Name',
 		'#size' => 15,
 		'#maxlength' => 20,
 	);
 
-	$form['gender_values'] = array(
-		'#type' => 'value',
-		'#value' => array(
-			-1 => t('Unspecified'),
-			0 => t('Male'),
-			1 => t('Female'),
-		),
-	);
-
 	$form['gender'] = array(
 		'#type' => 'select',
 		'#title' => t('Gender'),
-		'#options' => $form['gender_values']['#value'],
+		'#options' => array(t('Unspecified'), t('Male'), t('Female')),
 	);
 
 	$form['email'] = array(
@@ -80,24 +70,30 @@ function form_custom_form($form, &$form_state) {
  * Implementation of hook_form_submit
  */
 function form_custom_form_submit($form, &$form_state) {
+	$values = $form_state['values'];
+
+	// We can just put $values directly into fields() as long as we remove the form-related key/value pairs
+	unset_each(array('submit', 'form_build_id', 'form_token', 'form_id', 'op'), $values);
+
+	db_insert('form_custom_submissions')
+		->fields($values)
+		->execute();
+
+	drupal_set_message(t('Your information has been submitted, thanks!'), 'status');
 }
 
 /**
  * Implementation of hook_form_validate
  */
 function form_custom_form_validate($form, &$form_state) {
-	$values =& $form_state['values'];
+	$values = $form_state['values'];
 
-	if (empty($values['first-name'])) {
-		form_set_error('first-name', t('Please provide a first name.'));
+	if (empty($values['firstname'])) {
+		form_set_error('firstname', t('Please provide a first name.'));
 	}
 
-		if (empty($values['last-name'])) {
-				form_set_error('last-name', t('Everyone\'s got a last name... what\'s yours?'));
-		}
-
-	if (empty($values['gender'])) {
-		form_set_error('gender', t('Don\'t forget to specify your gender!'));
+	if (empty($values['lastname'])) {
+			form_set_error('lastname', t('Everyone\'s got a last name... what\'s yours?'));
 	}
 
 	if (empty($values['age'])) {
@@ -107,13 +103,18 @@ function form_custom_form_validate($form, &$form_state) {
 	} elseif ($values['age'] < 5) {
 		form_set_error('age', t('Don\'t get me wrong; I respect a toddler or infant that can use a computer, but seriously, you\'re not old enough to be filling out random forms online.'));
 	} elseif ($values['age'] < 13) {
-		form_set_error('age', t('Like most websites, you\'re not allowed to do stuff until you\'re at least 13 years old. Sorry, ' . ($values['gender'] == 'male' ? 'dude' : 'gal')));
+		form_set_error('age', t('Like most websites, you\'re not allowed to do stuff until you\'re at least 13 years old. Sorry!'));
 	}
 
-		if (empty($values['email'])) {
-				form_set_error('email', t('You forgot to give your email address.'));
-		} elseif (!valid_email_address($values['email'])) {
+	if (empty($values['email'])) {
+			form_set_error('email', t('You forgot to give your email address.'));
+	} elseif (!valid_email_address($values['email'])) {
 		form_set_error('email', t('Are you sure that\'s an email address? It sure doesn\'t look like one to me!'));
 	}
 }
 
+function unset_each(array $keys, array &$array) {
+	foreach ($keys as $key) {
+		unset($array[$key]);
+	}
+}

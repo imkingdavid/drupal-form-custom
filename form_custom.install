@@ -9,14 +9,14 @@ function form_custom_schema() {
 				'unsigned' => true,
 				'not null' => true,
 			),
-			'first-name' => array(
+			'firstname' => array(
 				'description' => "The submitter's first name",
 				'type' => 'varchar',
 				'length' => 255,
 				'not null' => true,
 				'default' => '',
 			),
-			'last-name' => array(
+			'lastname' => array(
 				'description' => "The submitter's last name.",
 				'type' => 'varchar',
 				'length' => 255,
@@ -25,10 +25,10 @@ function form_custom_schema() {
 			),
 			'gender' => array(
 				'description' => "The submitter's gender.",
-				'type' => 'int',
+				'type' => 'varchar',
+				'length' => 255,
 				'not null' => true,
-				'unsigned' => true,
-				'default' => 0, // 0 = male, 1 = female
+				'default' => '',
 			),
 			'age' => array(
 				'description' => "The submitter's age.",
@@ -47,8 +47,8 @@ function form_custom_schema() {
 		),
 		'primary key' => array('id'),
 		'indexes' => array(
-			'firstname' => array('first-name'),
-			'lastname' => array('last-name'),
+			'firstname' => array('firstname'),
+			'lastname' => array('lastname'),
 			'email' => array('email'),
 		),
 	);
