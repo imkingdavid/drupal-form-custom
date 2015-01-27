@@ -51,7 +51,7 @@ function form_custom_form($form, &$form_state) {
 	$form['gender'] = array(
 		'#type' => 'select',
 		'#title' => t('Gender'),
-		'#options' => array(t('Unspecified'), t('Male'), t('Female')),
+		'#options' => array('unspecified' => t('Unspecified'), 'male' => t('Male'), 'female' => t('Female')),
 	);
 
 	$form['email'] = array(
@@ -132,7 +132,26 @@ function form_custom_admin() {
 		$rows[] = (array) $record;
 	}
 
-	return theme('table', array('header' => $header, 'rows' => $rows));
+	$return = theme('table', array('header' => $header, 'rows' => $rows));
+
+	$return .= '<br /><div class="below-table">';
+
+	$skip = array('id');
+
+	foreach ((array) $rows as $row) {
+		$return .= '<div class="person-block"><ul>';
+		foreach ($row as $detail => $value) {
+			if (in_array($detail, $skip)) {
+				continue;
+			}
+			$return .= '<li><strong>' . ucfirst($detail) . '</strong>: ' . $value . '</li>';
+		}
+		$return .= '</ul></div>';
+	}
+
+	$return .= '</div>';
+
+	return $return;
 }
 
 

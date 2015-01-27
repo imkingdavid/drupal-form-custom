@@ -1,0 +1,12 @@
+div.person-block {
+	display:inline-block;
+	width:20%;
+	margin:5px;
+	border:1px solid #333333;
+	box-shadow: 5px 5px 2px #888888;
+}
+div.person-block ul li {
+	list-style: none;
+	float:left;
+	clear:left;
+}
